@@ -1,0 +1,9 @@
+﻿body {
+    background-color: azure;
+}
+
+.navbar {
+    background-color: darkcyan;
+    color: white;
+    font-size: 40px;
+}
