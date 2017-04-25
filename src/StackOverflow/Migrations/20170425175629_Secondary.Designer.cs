@@ -8,8 +8,8 @@ using StackOverflow.Models;
 namespace StackOverflow.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170425155705_Initial")]
-    partial class Initial
+    [Migration("20170425175629_Secondary")]
+    partial class Secondary
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -124,6 +124,22 @@ namespace StackOverflow.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("StackOverflow.Models.Answer", b =>
+                {
+                    b.Property<int>("AnswerId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content");
+
+                    b.Property<int>("QuestionId");
+
+                    b.HasKey("AnswerId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers");
+                });
+
             modelBuilder.Entity("StackOverflow.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -174,6 +190,26 @@ namespace StackOverflow.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("StackOverflow.Models.Question", b =>
+                {
+                    b.Property<int>("QuestionId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content");
+
+                    b.Property<string>("Title");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("Vote");
+
+                    b.HasKey("QuestionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Questions");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
@@ -209,6 +245,21 @@ namespace StackOverflow.Migrations
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("StackOverflow.Models.Answer", b =>
+                {
+                    b.HasOne("StackOverflow.Models.Question", "Question")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("StackOverflow.Models.Question", b =>
+                {
+                    b.HasOne("StackOverflow.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
         }
     }

@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Authorization;
 using StackOverflow.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
 
 namespace StackOverflow.Controllers
 {
+
     [Authorize]
-    public class StackOverflowController : Controller
+    public class AnswersController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
-        public StackOverflowController (UserManager<ApplicationUser> userManager, ApplicationDbContext db)
+        public AnswersController(UserManager<ApplicationUser> userManager, ApplicationDbContext db)
         {
             _userManager = userManager;
             _db = db;
@@ -25,7 +25,7 @@ namespace StackOverflow.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            return View(_db.Questions.Where(x => x.User.Id == currentUser.Id));
+            return View(_db.Answers.Where(x => x.User.Id == currentUser.Id));
         }
 
         public IActionResult Create()
@@ -34,23 +34,14 @@ namespace StackOverflow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Question question)
+        public async Task<IActionResult> Create(Answer answer)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
-            question.User = currentUser;
-            _db.Questions.Add(question);
+            answer.User = currentUser;
+            _db.Answers.Add(answer);
             _db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        public IActionResult Details(int id)
-        {
-            var thisQuestion = _db.Questions.FirstOrDefault(questions => questions.QuestionId == id);
-            ViewBag.ThisAnswers = _db.Questions
-                .Include(question => question.Answers)
-                .Where(question => question.QuestionId == id).ToList();
-            return View(thisQuestion);
         }
     }
 }

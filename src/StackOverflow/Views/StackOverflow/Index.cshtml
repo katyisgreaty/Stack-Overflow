@@ -14,13 +14,13 @@
     <ul>
         @foreach (var listQuestion in Model)
         {
-            <li>@Html.DisplayFor(modelQuestion => listQuestion.Title)</li>
+            <li>@Html.DisplayFor(modelQuestion => listQuestion.Title) | @Html.ActionLink("Details", "Details", new { id = listQuestion.QuestionId }) </li>
         }
     </ul>
 }
 else
 {
-    <p>No tasks have been added yet!</p>
+    <p>No questions have been added yet!</p>
 }
 
 @Html.ActionLink("Create new", "Create")

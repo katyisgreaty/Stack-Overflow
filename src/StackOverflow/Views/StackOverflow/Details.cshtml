@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model StackOverflow.Models.Question
+
+<h2>@Html.DisplayFor(model => model.Title)</h2>
+<h3>@Html.DisplayFor(model => model.Content)</h3>
+
+@if (Model.Answers.Count != 0)
+{
+    @foreach (var answer in Model.Answers)
+    {
+
+        <p>@answer.Content</p>
+    }
+}
+else
+{
+    <p>There are no answers yet</p>
+
+}
+
+
+
+<h2>Answer this question</h2>
+<hr />
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(model => model.Answers)
+    @Html.EditorFor(model => model.Answers)
+
+    <input type="submit" value="Create" />
+}

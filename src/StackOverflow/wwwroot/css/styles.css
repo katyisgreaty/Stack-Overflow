@@ -7,3 +7,7 @@
     color: white;
     font-size: 40px;
 }
+
+.pull-right {
+    padding-right: 10px;
+}

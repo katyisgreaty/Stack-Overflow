@@ -11,13 +11,19 @@ namespace StackOverflow.Models
     [Table("Questions")]
     public class Question
     {
+        public Question()
+        {
+            this.Answers = new HashSet<Answer>();
+        }
+
         [Key]
-        public int Id { get; set; }
+        public int QuestionId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
 
         [DefaultValue(0)]
         public int Vote { get; set; }
         public virtual ApplicationUser User { get; set; }
+        public virtual ICollection<Answer> Answers { get; set; }
     }
 }
